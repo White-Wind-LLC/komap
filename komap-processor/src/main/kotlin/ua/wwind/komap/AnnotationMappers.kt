@@ -59,6 +59,7 @@ internal fun processKomapOnClass(
             skipDefaults = skipDefaults,
             targetParams = annotatedParams,
             annotatedParamsForMapName = annotatedParams,
+            mapNameCounterpartClass = fromDecl,
             factoryCallee = null,
             factoryTopLevelImport = null,
         )
@@ -76,6 +77,7 @@ internal fun processKomapOnClass(
             skipDefaults = skipDefaults,
             targetParams = targetParams,
             annotatedParamsForMapName = annotatedParams,
+            mapNameCounterpartClass = toDecl,
             factoryCallee = resolvedFactory?.callee,
             factoryTopLevelImport = (resolvedFactory?.callee as? FactoryCallee.TopLevel)?.member,
         )
@@ -117,6 +119,7 @@ internal fun processKomapOnConstructor(
             skipDefaults = skipDefaults,
             targetParams = params,
             annotatedParamsForMapName = params,
+            mapNameCounterpartClass = fromDecl,
             factoryCallee = null,
             factoryTopLevelImport = null,
         )
@@ -168,6 +171,7 @@ internal fun processKomapOnCompanionFunction(
             skipDefaults = skipDefaults,
             targetParams = params,
             annotatedParamsForMapName = params,
+            mapNameCounterpartClass = fromDecl,
             factoryCallee = FactoryCallee.ObjectMember(
                 outerClass.toClassName().nestedClass("Companion"),
                 function.simpleName.asString()
@@ -224,6 +228,7 @@ private fun generateMapperFromFile(
     skipDefaults: Boolean,
     targetParams: List<KSValueParameter>,
     annotatedParamsForMapName: List<KSValueParameter>,
+    mapNameCounterpartClass: KSClassDeclaration,
     factoryCallee: FactoryCallee?,
     factoryTopLevelImport: MemberName?,
 ): FileSpec {
@@ -253,6 +258,7 @@ private fun generateMapperFromFile(
                 skipDefaults = skipDefaults,
                 targetHasDefault = param.hasDefault,
                 annotatedParamsForMapName = annotatedParamsForMapName,
+                mapNameCounterpartClass = mapNameCounterpartClass,
             )
         }
         Triple(propertyName, targetType, mapping)
@@ -347,9 +353,14 @@ private fun buildMappingExpression(
     skipDefaults: Boolean,
     targetHasDefault: Boolean,
     annotatedParamsForMapName: List<KSValueParameter>,
+    mapNameCounterpartClass: KSClassDeclaration,
 ): MappingExpression {
     val effectiveSourceNameFromAnnotated = annotatedParamsForMapName
-        .findSourceNameForTargetProperty(propertyName, fromClass)
+        .findSourceNameForTargetProperty(propertyName, mapNameCounterpartClass)
+        ?: fromClass.primaryConstructor
+            ?.parameters
+            ?.toList()
+            ?.findSourceNameForTargetProperty(propertyName, mapNameCounterpartClass)
     val effectiveSourceName = effectiveSourceNameFromAnnotated
         ?: param.findMappedNameForCounterpart(fromClass)
         ?: propertyName

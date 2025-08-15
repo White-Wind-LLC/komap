@@ -14,6 +14,7 @@ kotlin {
                 implementation(libs.kotlinpoet.ksp)
             }
             kotlin.srcDir("src/main/kotlin")
+            resources.srcDir("src/main/resources")
         }
     }
 }
