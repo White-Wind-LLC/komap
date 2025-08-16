@@ -3,6 +3,8 @@ version = "1.0.0"
 kotlin = "2.2.0"
 ksp = "2.2.0-2.0.2"
 kotlinPoet = "2.2.0"
+dokka = "2.0.0"
+mavenPublish = "0.34.0"
 
 [libraries]
 ksp-api = { group = "com.google.devtools.ksp", name = "symbol-processing-api", version.ref = "ksp" }
@@ -11,3 +13,5 @@ kotlinpoet-ksp = { group = "com.squareup", name = "kotlinpoet-ksp", version.ref 
 [plugins]
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "mavenPublish" }
