@@ -128,8 +128,8 @@ The processor selects a factory by matching return type and provided `factoryQua
 
 ## Supported targets
 
-- Annotations (`komap-annotations`): JVM, JS (Node), Linux X64/ARM64, macOS X64/ARM64, Windows (mingwX64), iOS
-  X64/ARM64/Simulator
+- Annotations (`komap-annotations`): Android (Library), JVM, JS (Node), WASM JS, Linux X64/ARM64, macOS X64/ARM64,
+  Windows (mingwX64), iOS X64/ARM64/Simulator
 - Processor (`komap-processor`): JVM (via KSP in metadata for KMP)
 
 ## Examples
