@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.dokka) apply false
     alias(libs.plugins.maven.publish) apply false
+    alias(libs.plugins.android.library) apply false
 }
 
 val libsCatalog = extensions.getByType<VersionCatalogsExtension>().named("libs")

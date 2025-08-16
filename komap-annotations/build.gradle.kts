@@ -1,13 +1,22 @@
+@file:OptIn(ExperimentalWasmDsl::class)
+
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
+
 plugins {
     kotlin("multiplatform")
     alias(libs.plugins.maven.publish)
+    alias(libs.plugins.android.library)
 }
 
 kotlin {
     explicitApi()
     jvmToolchain(17)
     jvm()
+    androidTarget()
     js {
+        nodejs()
+    }
+    wasmJs {
         nodejs()
     }
     linuxX64()
@@ -18,10 +27,16 @@ kotlin {
     iosX64()
     iosArm64()
     iosSimulatorArm64()
-    sourceSets {
-        val commonMain by getting {
-            kotlin.srcDir("src/main/kotlin")
-        }
+}
+
+android {
+    namespace = "ua.wwind.komap.annotations"
+    compileSdk = 35
+    defaultConfig {
+        minSdk = 21
+    }
+    publishing {
+        singleVariant("release")
     }
 }
 
